@@ -1,25 +1,26 @@
 {
-  "name": "libra-core",
-  "version": "1.0.0-alpha",
-  "description": "Library for Crypto",
+  "name": "libra-web",
+  "version": "0.1.0",
+  "description": "A library for connecting with libra via browser",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
     "build/**/*",
-    "lib/**/*"
+    "packages/**/*"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/perfectmak/libra-core.git"
+    "url": "https://github.com/smiled0g/libra-web.git"
   },
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write \"lib/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"packages/**/*.ts\" \"test/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
-    "test": "jest"
+    "test": "jest",
+    "proxy": "cd ./proxy && ./run_proxy.sh"
   },
   "keywords": [
     "libra",
@@ -27,7 +28,7 @@
     "crypto",
     "facebook"
   ],
-  "author": "Perfect Makanju",
+  "author": "Perfect Makanju, Sorawit Suriyakarn <swit@bandprotocol.com>, Paul Chonpimai <paul@bandprotocol.com>",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
@@ -36,7 +37,8 @@
     "elliptic": "^6.4.1",
     "futoin-hkdf": "^1.0.3",
     "google-protobuf": "^3.8.0",
-    "grpc": "^1.21.1",
+    "grpc-web": "^1.0.4",
+    "int64-buffer": "^0.99.1007",
     "protobufjs": "^6.8.8",
     "sha3": "^2.0.4"
   },
@@ -53,5 +55,11 @@
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "all",
+    "semi": false,
+    "singleQuote": true
   }
 }

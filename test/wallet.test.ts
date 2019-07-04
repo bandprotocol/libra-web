@@ -1,16 +1,16 @@
-import { Mnemonic } from '../lib/wallet/Mnemonic';
+import { Mnemonic } from 'libra-web-account'
 
 describe('LibraWallet', () => {
   describe('generateMnemonic()', () => {
     it('should generate 100 unique mnemonic', () => {
-      const mnemonics = [];
+      const mnemonics = []
 
       for (let i = 0; i < 100; i++) {
-        const mnemonic = new Mnemonic().toString();
-        mnemonics.push(mnemonic);
+        const mnemonic = new Mnemonic().toString()
+        mnemonics.push(mnemonic)
       }
 
-      expect([...new Set(mnemonics)].length).toBe(100);
-    });
-  });
-});
+      expect([...new Set(mnemonics)].length).toBe(100)
+    })
+  })
+})
