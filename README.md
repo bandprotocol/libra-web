@@ -6,8 +6,8 @@
   <p>
     <strong>Unofficial Javascript Client for <a href="http://libra.org">Libra Blockchain</a></strong>
 
-[![Code Style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Twitter Follow](https://img.shields.io/twitter/follow/bandprotocol.svg?style=social)](https://twitter.com/BandProtocol)
+[![NPM](https://img.shields.io/npm/l/libra-web.svg)](https://opensource.org/licenses/mit-license.php)
 [![Dependency Status](https://david-dm.org/bandprotocol/libra-web.svg)](https://david-dm.org/bandprotocol/libra-web)
 [![devDependency Status](https://david-dm.org/bandprotocol/libra-web/dev-status.svg)](https://david-dm.org/bandprotocol/libra-web#info=devDependencies)
 
