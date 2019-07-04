@@ -22,7 +22,7 @@ describe('LibraClient.query*()', () => {
 
         // TEST MINITNG xAmount
         const xAmount = 20e6
-        await client.mintWithFaucetService(account1Address, xAmount)
+        await client.mintWithFaucet(account1Address, xAmount)
         const newAccount1State = await client.getAccountState(account1Address)
         // ensure its balance is +xAmount
         expect(newAccount1State.balance.toString(10)).toEqual(account1State.balance.plus(xAmount).toString(10))

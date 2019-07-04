@@ -45,11 +45,11 @@ import { LibraWallet } from 'libra-web'
 
 # Create a new random wallet
 const wallet1 = LibraWallet.create()
-print(wallet1.getMnemonic())
+console.log(wallet1.getMnemonic())
 
 # Regenerate wallet from an existing Mnemonic
 wallet2 = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-print(wallet2.getMnemonic())
+console.log(wallet2.getMnemonic())
 ```
 
 ## Account
@@ -61,15 +61,15 @@ import { LibraWallet } from 'libra-web'
 
 const wallet = LibraWallet.create()
 
-const account1 = wallet.get_account(0)
-console.log(account1.address)
-console.log(account1.public_key)
-console.log(account1.private_key)
+const account1 = wallet.getAccount(0)
+console.log(account1.getAddress().toHex())
+console.log(account1.getPublicKey())
+console.log(account1.getSecretKey())
 
-const account2 = wallet.get_account(1)
-console.log(account2.address)
-console.log(account2.public_key)
-console.log(account2.private_key)
+const account2 = wallet.getAccount(1)
+console.log(account2.getAddress().toHex())
+console.log(account2.getPublicKey())
+console.log(account2.getSecretKey())
 ```
 
 ## LibraClient
@@ -80,71 +80,67 @@ A `LibraClient` must be created in order to send protobuf message to a Libra nod
 import { LibraClient } from 'libra-web'
 
 client1 = LibraClient() //  Default client connecting to the official testnet through TryLibra.org
-client2 = LibraClient('localhost:80') // Client connecting to a local node (see HTTP/2 Proxy below)
+client2 = LibraClient({
+  protocol: 'http',
+  host: 'localhost',
+  port: '8080',
+}) // Client connecting to a local node (see HTTP/2 Proxy below)
 ```
 
 ## Get Account State of an Address
 
 You can query an account's state by using `get_account_state` function on `LibraClient`. The function returns an `AccountState`, which contains the address' sequence number, balance, and more. If an account has not been created yet (never received any funds), the function will return `None`.
 
-```py
-from pylibra import LibraClient, LibraWallet
+```js
+import { LibraWallet, LibraClient } from 'libra-web'
 
-client = LibraClient()
-wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-account = wallet.get_account(0)
+const client = LibraClient()
+const wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
+const address = wallet.getAccount(0).getAddress().toHex()
 
-# You can pass in a hex string address
-account_state = client.get_account_state("4988ceb593200955bf64a024907a94206518d6ac2f624eec569abce38f98da86")
-print(account_state.balance)
-print(account_state.sequence_number)
-print(account_state.received_events_count)
-print(account_state.sent_events_count)
-
-# Account object can also be passed
-account_state = client.get_account_state(account)
+// In an async function
+// You can pass in a hex string address
+cosnt accountState = await client.getAccountState(address)
+console.log(accountState.balance)
+console.log(accountState.sequenceNumber)
+console.log(accountState.authenticationKey)
+console.log(accountState.sentEventsCount)
+console.log(accountState.receivedEventsCount)
 ```
 
 ## Mint Testnet Libra Token
 
-You can mint testnet libra with `mint_with_faucet` function, which sends a HTTP GET request to [http://faucet.testnet.libra.org](http://faucet.testnet.libra.org). You can customize this URL by passing a key-value argument `faucet` when creating a `LibraClient` (for example, when you want to have your own faucet service). The second argument is the mini-libra amount which is `10^6` times the amount of Libra token. (e.g. `10000` mini-libra is `0.01` Libra token).
+You can mint testnet libra with `client.mintWithFaucet` function, which sends a HTTP GET request to [http://faucet.testnet.libra.org](http://faucet.testnet.libra.org). You can customize this URL by passing a key-value argument `faucet` when creating a `LibraClient` (for example, when you want to have your own faucet service). The second argument is the mini-libra amount which is `10^6` times the amount of Libra token. (e.g. `10000` mini-libra is `0.01` Libra token).
 
 ```py
-from pylibra import LibraClient, LibraWallet
+import { LibraWallet, LibraClient } from 'libra-web'
 
-client = LibraClient()
-wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-account = wallet.get_account(0)
+
+const client = LibraClient()
+const wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
+const address = wallet.getAccount(0).getAddress().toHex()
 
 # Mint 0.01 Libra to the given address
-client.mint_with_faucet("4988ceb593200955bf64a024907a94206518d6ac2f624eec569abce38f98da86", 10000)
-
-# Or the given account
-client.mint_with_faucet(account, 10000)
+client.mintWithFaucet(address, 10000)
 ```
 
 ## Creating a Transfer Transaction Script and Sending the Transaction
 
 Note that in the official testnet, the Libra node ONLY allows sending [the official transfer transaction script](https://github.com/libra/libra/blob/master/language/stdlib/transaction_scripts/peer_to_peer_transfer.mvir). In the future, this library can be extended to support more transaction scripts as well, as you can see that the logic of creating and sending a transaction is completely independent!
 
-```py
-from pylibra import LibraClient, LibraWallet
-from pylibra.transaction import TransferTransaction
+```js
+import { LibraWallet, LibraClient, LibraTransactionFactory } from 'libra-web'
 
-client = LibraClient()
-wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-account1 = wallet.get_account(0)
-account2 = wallet.get_account(1)
+const client = LibraClient()
+const wallet = LibraWallet('student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel')
+const account1 = wallet.getAccount(0)
+const account2 = wallet.getAccount(1)
 
-# Create a transfer transaction object to send 0.001 Libra to account2
-tx1 = TransferTransaction(account2, 1000)
-# Or to send to a plain hex address
-tx2 = TransferTransaction("4988ceb593200955bf64a024907a94206518d6ac2f624eec569abce38f98da86", 1000)
+// Create a transfer transaction object to send 0.001 Libra from account1 to account2
+const tx = LibraTransactionFactory.createTransfer(account1.getAddress(), account2.getAddress(), 1000)
 
-# You can send a transaction by calling `send_transaction` function, which takes a sender `Account` and a `Transaction` object. You can also optionally passed `max_gas_amount`, `gas_unit_price`, and `expiration_time`.
-client.send_transaction(account1, tx1)
-# Specify gas limit, gas price, and expiration time (this case, it will expire in year 2508)
-client.send_transaction(account1, tx2, max_gas_amount=10000, gas_unit_price=0, expiration_time=17000000000)
+// You can send a transaction by calling `send_transaction` function, which takes a sender `Account` and a `Transaction` object. You can also optionally passed `max_gas_amount`, `gas_unit_price`, and `expiration_time`.
+client.execute(tx, account1)
 ```
 
 # HTTP/2 Proxy

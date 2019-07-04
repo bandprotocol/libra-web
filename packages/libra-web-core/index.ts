@@ -18,7 +18,7 @@ import {
 } from 'libra-web-net'
 import { CursorBuffer } from 'libra-web-core-utils/common/CursorBuffer'
 import PathValues from 'libra-web-core-utils/constants/PathValues'
-import { LibraTransaction, TransactionFactory } from 'libra-web-transaction'
+import { LibraTransaction, LibraTransactionFactory } from 'libra-web-transaction'
 import { Account, AccountAddress, AccountState, AccountStates } from 'libra-web-account'
 
 export enum LibraNetwork {
@@ -129,7 +129,7 @@ export class LibraClient {
    *
    * Note: `numCoins` should be in base unit i.e microlibra (10^6 I believe).
    */
-  public async mintWithFaucetService(
+  public async mintWithFaucet(
     receiver: AccountAddress | string,
     numCoins: BigNumber | string | number,
     waitForConfirmation: boolean = true,
@@ -201,7 +201,7 @@ export class LibraClient {
     numCoins: number | string | BigNumber,
   ): Promise<SubmitTransactionResponse> {
     const response = await this.execute(
-      TransactionFactory.createTransfer(
+      LibraTransactionFactory.createTransfer(
         sender.getAddress().toBytes(),
         new Uint8Array((receipientAddress.match(/.{1,2}/g) as RegExpMatchArray).map(byte => parseInt(byte, 16))),
         new BigNumber(numCoins),

@@ -90,6 +90,14 @@ export class Account {
   public generateSignature(message: Buffer): Uint8Array {
     return this.keyPair.sign(message)
   }
+
+  public getSecretKey(): Uint8Array {
+    return this.keyPair.getSecretKey()
+  }
+
+  public getPublicKey(): Uint8Array {
+    return this.keyPair.getPublicKey()
+  }
 }
 
 /**

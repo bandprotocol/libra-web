@@ -39,7 +39,7 @@ export class LibraTransaction {
   }
 }
 
-export class TransactionFactory {
+export class LibraTransactionFactory {
   public static createTransfer(
     senderAddress: Uint8Array,
     receipientAddress: Uint8Array,
