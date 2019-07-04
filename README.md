@@ -18,41 +18,41 @@
 
 Much of this library borrows the code from [libra-core](https://github.com/perfectmak/libra-core), which does a lot of heavy-lifting already (kudos to [perfectmak](https://github.com/perfectmak)!)
 
-# Installation
+## Installation
 
-## via yarn
+### 🔻via yarn
 
 ```sh
 $ yarn add libra-web
 ```
 
-## via CDN
+### 🔻via CDN
 
 ```
 Link TBD
 ```
 
-# Usage
+## Usage
 
 Below you can find example usages together with explanation. Note that this is an alpha software and interface can change all the time, especially when Libra's interface itself is not yet settle.
 
-## LibraWallet
+### 👛 LibraWallet
 
 You can create a wallet using `LibraWallet` class. A wallet is like your masterkey and you can create almost infinitely many Libra accounts from it. Note that PyLibra's mnemonic scheme is not similar to that of [Libra's CLI](https://github.com/libra/libra/tree/master/client/src), so you cannot import mnemonic between the two libraries (yet).
 
 ```js
 import { LibraWallet } from 'libra-web'
 
-# Create a new random wallet
+## Create a new random wallet
 const wallet1 = LibraWallet.create()
 console.log(wallet1.getMnemonic())
 
-# Regenerate wallet from an existing Mnemonic
+## Regenerate wallet from an existing Mnemonic
 wallet2 = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
 console.log(wallet2.getMnemonic())
 ```
 
-## Account
+### 🎫 Account
 
 An `Account` can be created by calling `get_account` function on a wallet, with a nonce integer. You use any number (0, 1, 2, ...) to generate a new account under your wallet. This is similar to how [MetaMask](https://metamask.io) keeps track of account. An `Account` contains its `address`, `public_key`, and `private_key`.
 
@@ -72,7 +72,7 @@ console.log(account2.getPublicKey())
 console.log(account2.getSecretKey())
 ```
 
-## LibraClient
+### 📟 LibraClient
 
 A `LibraClient` must be created in order to send protobuf message to a Libra node. You can create a client with the following code.
 
@@ -87,7 +87,7 @@ client2 = LibraClient({
 }) // Client connecting to a local node (see HTTP/2 Proxy below)
 ```
 
-## Get Account State of an Address
+### 🕵️‍ Get Account State of an Address
 
 You can query an account's state by using `get_account_state` function on `LibraClient`. The function returns an `AccountState`, which contains the address' sequence number, balance, and more. If an account has not been created yet (never received any funds), the function will return `None`.
 
@@ -108,23 +108,25 @@ console.log(accountState.sentEventsCount)
 console.log(accountState.receivedEventsCount)
 ```
 
-## Mint Testnet Libra Token
+### 🌟 Mint Testnet Libra Token
 
 You can mint testnet libra with `client.mintWithFaucet` function, which sends a HTTP GET request to [http://faucet.testnet.libra.org](http://faucet.testnet.libra.org). You can customize this URL by passing a key-value argument `faucet` when creating a `LibraClient` (for example, when you want to have your own faucet service). The second argument is the mini-libra amount which is `10^6` times the amount of Libra token. (e.g. `10000` mini-libra is `0.01` Libra token).
 
-```py
+```js
 import { LibraWallet, LibraClient } from 'libra-web'
 
-
 const client = LibraClient()
-const wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-const address = wallet.getAccount(0).getAddress().toHex()
+const wallet = LibraWallet('student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel')
+const address = wallet
+  .getAccount(0)
+  .getAddress()
+  .toHex()
 
-# Mint 0.01 Libra to the given address
+// Mint 0.01 Libra to the given address
 client.mintWithFaucet(address, 10000)
 ```
 
-## Creating a Transfer Transaction Script and Sending the Transaction
+### 🗣 Creating a Transfer Transaction Script and Sending the Transaction
 
 Note that in the official testnet, the Libra node ONLY allows sending [the official transfer transaction script](https://github.com/libra/libra/blob/master/language/stdlib/transaction_scripts/peer_to_peer_transfer.mvir). In the future, this library can be extended to support more transaction scripts as well, as you can see that the logic of creating and sending a transaction is completely independent!
 
@@ -143,7 +145,7 @@ const tx = LibraTransactionFactory.createTransfer(account1.getAddress(), account
 client.execute(tx, account1)
 ```
 
-# HTTP/2 Proxy
+## HTTP/2 Proxy
 
 Currently [gRPC-web](https://github.com/grpc/grpc-web) requires a proxy to communicate with gRPC-enabled Libra nodes. To run a local proxy, you need [Docker](https://www.docker.com/) and run:
 
@@ -151,10 +153,10 @@ Currently [gRPC-web](https://github.com/grpc/grpc-web) requires a proxy to commu
 $ yarn proxy
 ```
 
-# License
+## License
 
 This software is created by [Band Protocol](https://bandprotocol.com) and is released under [the MIT License](https://opensource.org/licenses/MIT).
 
-# Contributing
+## Contributing
 
 Any and all contributions are welcome! The process is simple: fork this repo, make your changes, and submit a pull request.
