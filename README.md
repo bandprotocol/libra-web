@@ -18,7 +18,7 @@
 
 Much of this library borrows the code from [libra-core](https://github.com/perfectmak/libra-core), which does a lot of heavy-lifting already (kudos to [perfectmak](https://github.com/perfectmak)!)
 
-## Installation
+# Installation
 
 ### 🔻via yarn
 
@@ -32,7 +32,7 @@ $ yarn add libra-web
 Link TBD
 ```
 
-## Usage
+# Usage
 
 Below you can find example usages together with explanation. Note that this is an alpha software and interface can change all the time, especially when Libra's interface itself is not yet settle.
 
@@ -43,12 +43,12 @@ You can create a wallet using `LibraWallet` class. A wallet is like your masterk
 ```js
 import { LibraWallet } from 'libra-web'
 
-## Create a new random wallet
+// Create a new random wallet
 const wallet1 = LibraWallet.create()
 console.log(wallet1.getMnemonic())
 
-## Regenerate wallet from an existing Mnemonic
-wallet2 = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
+// Regenerate wallet from an existing Mnemonic
+wallet2 = LibraWallet('student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel')
 console.log(wallet2.getMnemonic())
 ```
 
