@@ -13,7 +13,7 @@ class App extends React.Component {
     })
 
     // TEST ACCOUNT CREATION
-    const account1 = wallet.newAccount()
+    const account1 = wallet.getAccount()
     const account1Address = account1.getAddress().toHex()
     console.log('User 1 address is', account1Address)
 

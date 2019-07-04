@@ -21,39 +21,46 @@ import PathValues from 'libra-web-core-utils/constants/PathValues'
 import { LibraTransaction, TransactionFactory } from 'libra-web-transaction'
 import { Account, AccountAddress, AccountState, AccountStates } from 'libra-web-account'
 
-const DefaultFaucetServerHost = 'faucet.testnet.libra.org'
-const DefaultTestnetServerHost = 'ac.testnet.libra.org'
+export enum LibraNetwork {
+  Testnet = 'testnet',
+  Mainnet = 'mainnet',
+  Local = 'local',
+}
 
 interface LibralLibConfig {
-  port?: string
-  host?: string
+  port: string
+  host: string
+  protocol: string
   network?: LibraNetwork
   faucetServerHost?: string
   validatorSetFile?: string
 }
 
-export enum LibraNetwork {
-  Testnet = 'testnet',
-  // Mainnet = 'mainnet'
-}
+const DefaultFaucetServerHost = 'faucet.testnet.libra.org'
+
+const DefaultProxyServer: LibralLibConfig =
+  process.env.NODE_ENV === 'test'
+    ? {
+        protocol: 'http',
+        host: 'localhost',
+        port: '8080',
+        network: LibraNetwork.Local,
+      }
+    : {
+        protocol: 'http',
+        host: 'testnet.trylibra.org',
+        port: '80',
+        network: LibraNetwork.Testnet,
+      }
 
 export class LibraClient {
   private readonly config: LibralLibConfig
   private readonly client: AdmissionControlClient
 
-  constructor(config: LibralLibConfig) {
-    this.config = config
+  constructor(config?: LibralLibConfig) {
+    this.config = config || DefaultProxyServer
 
-    if (config.host === undefined) {
-      // since only testnet for now
-      this.config.host = DefaultTestnetServerHost
-    }
-
-    if (config.port === undefined) {
-      this.config.port = '80'
-    }
-
-    const connectionAddress = 'http://localhost:8080' //`${this.config.host}:${this.config.port}`;
+    const connectionAddress = `${this.config.protocol}://${this.config.host}:${this.config.port}`
     this.client = new AdmissionControlClient(connectionAddress, null, null)
   }
 

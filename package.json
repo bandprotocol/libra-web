@@ -13,14 +13,14 @@
     "url": "https://github.com/smiled0g/libra-web.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "NODE_ENV=production tsc",
     "format": "prettier --write \"packages/**/*.ts\" \"test/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
-    "test": "jest",
-    "proxy": "cd ./proxy && ./run_proxy.sh"
+    "test": "NODE_ENV=test jest --verbose",
+    "proxy": "cd ./scripts/proxy && ./run_proxy.sh"
   },
   "keywords": [
     "libra",

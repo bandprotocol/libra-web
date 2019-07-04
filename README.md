@@ -28,7 +28,9 @@ $ yarn add libra-web
 
 ## via CDN
 
-`Link`
+```
+Link TBD
+```
 
 # Usage
 
@@ -38,47 +40,47 @@ Below you can find example usages together with explanation. Note that this is a
 
 You can create a wallet using `LibraWallet` class. A wallet is like your masterkey and you can create almost infinitely many Libra accounts from it. Note that PyLibra's mnemonic scheme is not similar to that of [Libra's CLI](https://github.com/libra/libra/tree/master/client/src), so you cannot import mnemonic between the two libraries (yet).
 
-```py
-from pylibra import LibraWallet
+```js
+import { LibraWallet } from 'libra-web'
 
 # Create a new random wallet
-wallet1 = LibraWallet()
-print(wallet1.to_mnemonic())
+const wallet1 = LibraWallet.create()
+print(wallet1.getMnemonic())
 
 # Regenerate wallet from an existing Mnemonic
 wallet2 = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-print(wallet2.to_mnemonic())
+print(wallet2.getMnemonic())
 ```
 
 ## Account
 
 An `Account` can be created by calling `get_account` function on a wallet, with a nonce integer. You use any number (0, 1, 2, ...) to generate a new account under your wallet. This is similar to how [MetaMask](https://metamask.io) keeps track of account. An `Account` contains its `address`, `public_key`, and `private_key`.
 
-```py
-from pylibra import LibraWallet
+```js
+import { LibraWallet } from 'libra-web'
 
-wallet = LibraWallet()
+const wallet = LibraWallet.create()
 
-account1 = wallet.get_account(0)
-print(account1.address)
-print(account1.public_key)
-print(account1.private_key)
+const account1 = wallet.get_account(0)
+console.log(account1.address)
+console.log(account1.public_key)
+console.log(account1.private_key)
 
-account2 = wallet.get_account(1)
-print(account2.address)
-print(account2.public_key)
-print(account2.private_key)
+const account2 = wallet.get_account(1)
+console.log(account2.address)
+console.log(account2.public_key)
+console.log(account2.private_key)
 ```
 
 ## LibraClient
 
 A `LibraClient` must be created in order to send protobuf message to a Libra node. You can create a client with the following code.
 
-```py
-from pylibra import LibraClient
+```js
+import { LibraClient } from 'libra-web'
 
-client1 = LibraClient()  # Default client connecting to the official testnet through TryLibra.org
-client2 = LibraClient('localhost:80')  # Client connecting to a local node
+client1 = LibraClient() //  Default client connecting to the official testnet through TryLibra.org
+client2 = LibraClient('localhost:80') // Client connecting to a local node (see HTTP/2 Proxy below)
 ```
 
 ## Get Account State of an Address
