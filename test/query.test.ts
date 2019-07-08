@@ -48,8 +48,7 @@ describe('LibraClient.query*()', () => {
 
         // TEST ACCOUNT CREATION
         const account1 = wallet.getAccount(0)
-        const account1Address = account1.getAddress().toHex()
-        console.log('User 1 address is', account1Address)
+        console.log('User 1 address is', account1.getAddress().toHex())
 
         const yAmount = 1e6
         const transferResult = await client.transferCoins(
@@ -57,10 +56,8 @@ describe('LibraClient.query*()', () => {
           '1dc70740d8ef845095db2cc1af5be777ff1fbfe4361cff36ff4c6952072b9296',
           yAmount,
         )
-
-        console.log(transferResult)
       } catch (e) {
-        console.error('========>', e)
+        console.error(e)
       }
     }, 30000)
   })

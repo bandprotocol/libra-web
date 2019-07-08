@@ -48,7 +48,7 @@ const DefaultProxyServer: LibralLibConfig =
       }
     : {
         protocol: 'http',
-        host: 'testnet.trylibra.org',
+        host: 'ac.testnet.trylibra.org',
         port: '80',
         network: LibraNetwork.Testnet,
       }
