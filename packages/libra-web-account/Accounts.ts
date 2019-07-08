@@ -16,9 +16,9 @@ export class AccountState {
   /**
    * Returns an empty AccountState
    */
-  public static default(address: string): AccountState {
+  public static default(address: AccountAddress): AccountState {
     return new AccountState(
-      new Uint8Array(Buffer.from(address, 'hex')),
+      Uint8Array.from(address.toBytes()),
       new BigNumber(0),
       new BigNumber(0),
       new BigNumber(0),
@@ -117,6 +117,11 @@ export class AccountAddress {
   public static default(): AccountAddress {
     return new AccountAddress(new Uint8Array(Addresses.AddressLength))
   }
+
+  public static fromHex(addressHex: string): AccountAddress {
+    return new AccountAddress(Uint8Array.from(Buffer.from(addressHex, 'hex')))
+  }
+
   private readonly addressBytes: Uint8Array
 
   constructor(hash: Uint8Array) {

@@ -70,7 +70,7 @@ export class LibraClient {
    *
    * @param {string} address Accounts address
    */
-  public async getAccountState(address: string): Promise<AccountState> {
+  public async getAccountState(address: AccountAddress): Promise<AccountState> {
     const result = await this.getAccountStates([address])
     return result[0]
   }
@@ -80,9 +80,9 @@ export class LibraClient {
    *
    * @param {string[]} addresses Array of users addresses
    */
-  public async getAccountStates(addresses: string[]): Promise<AccountStates> {
+  public async getAccountStates(addresses: AccountAddress[]): Promise<AccountStates> {
     for (const address of addresses) {
-      if (!AccountAddress.isValidString(address)) {
+      if (!AccountAddress.isValidString(address.toHex())) {
         throw new Error(`[${address}] is not a valid address`)
       }
     }
@@ -92,7 +92,7 @@ export class LibraClient {
     addresses.forEach(address => {
       const requestItem = new RequestItem()
       const getAccountStateRequest = new GetAccountStateRequest()
-      getAccountStateRequest.setAddress(Uint8Array.from(Buffer.from(address, 'hex')))
+      getAccountStateRequest.setAddress(Uint8Array.from(address.toBytes()))
       requestItem.setGetAccountStateRequest(getAccountStateRequest)
       request.addRequestedItems(requestItem)
     })
@@ -156,24 +156,23 @@ export class LibraClient {
    *
    */
   public async waitForConfirmation(
-    accountAddress: AccountAddress | string,
+    accountAddress: AccountAddress,
     transactionSequenceNumber: number | string | BigNumber,
   ): Promise<void> {
     const sequenceNumber = new BigNumber(transactionSequenceNumber)
-    const address = accountAddress.toString()
     let maxIterations = 50
 
     const poll = (resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: Error) => void) => {
       setTimeout(() => {
         maxIterations--
-        this.getAccountState(address)
+        this.getAccountState(accountAddress)
           .then(accountState => {
             if (accountState.sequenceNumber.gte(sequenceNumber)) {
               return resolve()
             }
 
             if (maxIterations === -1) {
-              reject(new Error(`Confirmation timeout for [${address}]:[${sequenceNumber.toString(10)}]`))
+              reject(new Error(`Confirmation timeout for [${accountAddress.toHex()}]:[${sequenceNumber.toString(10)}]`))
             } else {
               poll(resolve, reject)
             }
@@ -197,13 +196,14 @@ export class LibraClient {
    */
   public async transferCoins(
     sender: Account,
-    receipientAddress: string,
+    receipientAddress: AccountAddress | string,
     numCoins: number | string | BigNumber,
   ): Promise<SubmitTransactionResponse> {
+    if (typeof receipientAddress === 'string') receipientAddress = AccountAddress.fromHex(receipientAddress)
     const response = await this.execute(
       LibraTransactionFactory.createTransfer(
         sender.getAddress().toBytes(),
-        new Uint8Array((receipientAddress.match(/.{1,2}/g) as RegExpMatchArray).map(byte => parseInt(byte, 16))),
+        Uint8Array.from(receipientAddress.toBytes()),
         new BigNumber(numCoins),
       ),
       sender,
@@ -225,7 +225,7 @@ export class LibraClient {
     }
     let sequenceNumber = transaction.sequenceNumber
     if (sequenceNumber.isNegative()) {
-      const senderAccountState = await this.getAccountState(senderAddress.toHex())
+      const senderAccountState = await this.getAccountState(senderAddress)
       sequenceNumber = senderAccountState.sequenceNumber
     }
 

@@ -14,7 +14,7 @@
   </p>
 </div>
 
-`libra-web` is an unofficial javascript client for [Libra blockchain](http://libra.org). The library allows javascript program to interact with Libra nodes with [protobuf](https://developers.google.com/protocol-buffers/) message through [grpc-web](https://grpc.io/). **It works in both Browser and Node.js environments**. Note that this library performs key management internally. No server required! (except HTTP/2 proxy served through TryLibra.org)
+**`libra-web`** is an unofficial javascript client for [Libra blockchain](http://libra.org). The library allows javascript program to interact with Libra nodes with [protobuf](https://developers.google.com/protocol-buffers/) message through [grpc-web](https://grpc.io/). **It works in both Browser and Node.js environments**. Note that this library performs key management internally. No server required! (except HTTP/2 proxy served through TryLibra.org)
 
 Much of this library borrows the code from [libra-core](https://github.com/perfectmak/libra-core), which does a lot of heavy-lifting already (kudos to [perfectmak](https://github.com/perfectmak)!)
 
@@ -96,7 +96,7 @@ import { LibraWallet, LibraClient } from 'libra-web'
 
 const client = LibraClient()
 const wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
-const address = wallet.getAccount(0).getAddress().toHex()
+const address = wallet.getAccount(0).getAddress()
 
 // In an async function
 // You can pass in a hex string address
@@ -117,10 +117,7 @@ import { LibraWallet, LibraClient } from 'libra-web'
 
 const client = LibraClient()
 const wallet = LibraWallet('student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel')
-const address = wallet
-  .getAccount(0)
-  .getAddress()
-  .toHex()
+const address = wallet.getAccount(0).getAddress()
 
 // Mint 0.01 Libra to the given address
 client.mintWithFaucet(address, 10000)
