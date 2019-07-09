@@ -12,10 +12,12 @@ import { Mnemonic } from './Mnemonic'
 export class Seed {
   public static fromMnemonic(words: string[] | Mnemonic, salt: string = 'LIBRA'): Seed {
     const mnemonic: Mnemonic = Array.isArray(words) ? new Mnemonic(words) : words
-    const mnemonicBytes = mnemonic.toBytes()
-    const parsedSalt = `${KeyPrefixes.MnemonicSalt}${salt}`
-
-    const bytes = new Pbkdf('sha256').extract(mnemonicBytes, parsedSalt, 2048, 32)
+    const bytes = new Pbkdf('sha3-256').pbkdf2(
+        mnemonic.toBytes(),
+        Buffer.from(`${KeyPrefixes.MnemonicSalt}${salt}`),
+        2048,
+        32,
+    )
     return new Seed(bytes)
   }
   public readonly data: Uint8Array
@@ -38,7 +40,7 @@ export class KeyFactory {
 
   constructor(seed: Seed) {
     this.seed = seed
-    this.hkdf = new Hkdf('sha256')
+    this.hkdf = new Hkdf('sha3-256')
     this.masterPrk = this.hkdf.extract(this.seed.data, KeyPrefixes.MasterKeySalt)
   }
 
@@ -47,7 +49,12 @@ export class KeyFactory {
    *
    */
   public generateKey(childDepth: number): KeyPair {
-    const info = `${KeyPrefixes.DerivedKey}${childDepth}`
+    const childDepthBuffer = Buffer.alloc(8)
+    childDepthBuffer.writeBigUInt64LE(BigInt(childDepth))
+    const info = Buffer.concat([
+      Uint8Array.from(Buffer.from(KeyPrefixes.DerivedKey)),
+      Uint8Array.from(childDepthBuffer),
+    ]);
     const secretKey = this.hkdf.expand(this.masterPrk, info, 32)
 
     return KeyPair.fromSecretKey(secretKey)

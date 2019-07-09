@@ -15,7 +15,7 @@ describe('LibraClient.query*()', () => {
         console.log('User 1 address is', account1Address.toHex())
         let account1State = await client.getAccountState(account1Address)
 
-        const account2 = wallet.getAccount(0)
+        const account2 = wallet.getAccount(1)
         const account2Address = account2.getAddress()
         console.log('User 2 address is', account2Address.toHex())
         let account2State = await client.getAccountState(account2Address)
