@@ -1,4 +1,3 @@
-import { toBufferLE } from 'bigint-buffer'
 import KeyPrefixes from '../libra-web-core-utils/constants/KeyPrefixes'
 import { KeyPair } from '../libra-web-core-utils/crypto/Eddsa'
 import { Hkdf } from '../libra-web-core-utils/crypto/Hkdf'
