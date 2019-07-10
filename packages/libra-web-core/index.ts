@@ -2,24 +2,24 @@ import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import { SHA3 } from 'sha3'
 
+import { Account, AccountAddress, AccountState, AccountStates } from '../libra-web-account'
+import { CursorBuffer } from '../libra-web-core-utils/common/CursorBuffer'
+import PathValues from '../libra-web-core-utils/constants/PathValues'
 import {
   AccountStateBlob,
   AccountStateWithProof,
   AdmissionControlClient,
-  SubmitTransactionRequest,
-  SubmitTransactionResponse,
   GetAccountStateRequest,
   GetAccountStateResponse,
+  RawTransaction,
   RequestItem,
   ResponseItem,
-  UpdateToLatestLedgerRequest,
-  RawTransaction,
   SignedTransaction,
+  SubmitTransactionRequest,
+  SubmitTransactionResponse,
+  UpdateToLatestLedgerRequest,
 } from '../libra-web-net'
-import { CursorBuffer } from '../libra-web-core-utils/common/CursorBuffer'
-import PathValues from '../libra-web-core-utils/constants/PathValues'
 import { LibraTransaction, LibraTransactionFactory } from '../libra-web-transaction'
-import { Account, AccountAddress, AccountState, AccountStates } from '../libra-web-account'
 
 export enum LibraNetwork {
   Testnet = 'testnet',
@@ -41,16 +41,16 @@ const DefaultFaucetServerHost = 'faucet.testnet.libra.org'
 const DefaultProxyServer: LibralLibConfig =
   process.env.NODE_ENV === 'test'
     ? {
-        protocol: 'http',
         host: 'localhost',
-        port: '8080',
         network: LibraNetwork.Local,
+        port: '8080',
+        protocol: 'http',
       }
     : {
-        protocol: 'http',
         host: 'ac.testnet.trylibra.org',
-        port: '80',
         network: LibraNetwork.Testnet,
+        port: '80',
+        protocol: 'http',
       }
 
 export class LibraClient {
@@ -199,7 +199,9 @@ export class LibraClient {
     receipientAddress: AccountAddress | string,
     numCoins: number | string | BigNumber,
   ): Promise<SubmitTransactionResponse> {
-    if (typeof receipientAddress === 'string') receipientAddress = AccountAddress.fromHex(receipientAddress)
+    if (typeof receipientAddress === 'string') {
+      receipientAddress = AccountAddress.fromHex(receipientAddress)
+    }
     const response = await this.execute(
       LibraTransactionFactory.createTransfer(
         sender.getAddress().toBytes(),

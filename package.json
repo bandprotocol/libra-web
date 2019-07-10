@@ -1,6 +1,6 @@
 {
   "name": "libra-web",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A library for connecting with libra from browser and Node.js",
   "main": "build/libra-web/index.js",
   "types": "build/libra-web/index.d.ts",

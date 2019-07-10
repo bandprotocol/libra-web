@@ -45,8 +45,8 @@ export class LibraTransactionFactory {
     receipientAddress: Uint8Array,
     numCoins: BigNumber,
     gasConstraint: LibraGasConstraint = {
-      maxGasAmount: new BigNumber('10000'),
       gasUnitPrice: new BigNumber('0'),
+      maxGasAmount: new BigNumber('10000'),
     },
     expirationTime: string | BigNumber = '1661898073',
     sequenceNumber: string | BigNumber = '-1',

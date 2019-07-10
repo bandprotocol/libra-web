@@ -3,21 +3,20 @@ import { KeyFactory, Seed } from './KeyFactory'
 import { Mnemonic } from './Mnemonic'
 
 export class LibraWallet {
+  public static create(): LibraWallet {
+    return new LibraWallet(new Mnemonic().toString())
+  }
   private readonly mnemonic: string[]
   private keyFactory: KeyFactory
 
-  static create(): LibraWallet {
-    return new LibraWallet(new Mnemonic().toString())
-  }
-
-  constructor(_mnemonic: string) {
-    if (!_mnemonic) {
+  constructor(mnemonic: string) {
+    if (!mnemonic) {
       throw new Error(
         'Mnemonic is required for initialing LibraWallet. Use LibraWallet.create() for creating a new one.',
       )
     }
 
-    this.mnemonic = _mnemonic.trim().split(' ')
+    this.mnemonic = mnemonic.trim().split(' ')
     const seed = Seed.fromMnemonic(this.mnemonic, 'LIBRA')
     this.keyFactory = new KeyFactory(seed)
   }
