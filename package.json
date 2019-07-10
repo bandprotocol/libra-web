@@ -2,8 +2,8 @@
   "name": "libra-web",
   "version": "0.1.0",
   "description": "A library for connecting with libra from browser and Node.js",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "build/libra-web/index.js",
+  "types": "build/libra-web/index.d.ts",
   "files": [
     "build/**/*",
     "packages/**/*"
@@ -13,14 +13,14 @@
     "url": "https://github.com/bandprotocol/libra-web.git"
   },
   "scripts": {
-    "build": "NODE_ENV=production tsc",
+    "build": "NODE_ENV=production tsc --build",
     "format": "prettier --write \"packages/**/*.ts\" \"test/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
-    "test": "NODE_ENV=test jest --verbose",
-    "test-prod": "NODE_ENV=production jest --verbose",
+    "test": "NODE_ENV=test jest --verbose false",
+    "test-prod": "NODE_ENV=production jest --verbose false",
     "proxy": "cd ./scripts/proxy && ./run_proxy.sh"
   },
   "keywords": [
@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
+    "bigint-buffer": "^1.1.2",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "elliptic": "^6.4.1",

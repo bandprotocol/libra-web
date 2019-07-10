@@ -1,4 +1,4 @@
-import { LibraClient, LibraWallet } from 'libra-web'
+import { LibraClient, LibraWallet } from '../packages/libra-web'
 
 describe('LibraClient.query*()', () => {
   describe('queryBalance()', () => {

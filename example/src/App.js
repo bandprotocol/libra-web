@@ -6,11 +6,10 @@ import { LibraClient, LibraNetwork, LibraWallet } from 'libra-web'
 
 class App extends React.Component {
   onTransfer = async () => {
-    const client = new LibraClient({ network: LibraNetwork.Testnet })
-    const wallet = new LibraWallet({
-      mnemonic:
-        'silk rural awake receive timber bronze mutual message squeeze rug result shoot settle guide wheat believe dune fall share syrup picture true offer slow',
-    })
+    const client = new LibraClient()
+    const wallet = new LibraWallet(
+      'silk rural awake receive timber bronze mutual message squeeze rug result shoot settle guide wheat believe dune fall share syrup picture true offer slow',
+    )
 
     // TEST ACCOUNT CREATION
     const account1 = wallet.getAccount()

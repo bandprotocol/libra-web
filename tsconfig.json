@@ -7,8 +7,7 @@
 
     "strict": true,
 
-    "moduleResolution": "node",
-    "baseUrl": "./packages",
+    "baseUrl": ".",
     "esModuleInterop": true
   },
   "include": ["packages/**/*", "packages/libra-web-net/__grpc_web_generated__/*", "test/**/*"],
