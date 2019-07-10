@@ -1,7 +1,8 @@
-import KeyPrefixes from 'libra-web-core-utils/constants/KeyPrefixes'
-import { KeyPair } from 'libra-web-core-utils/crypto/Eddsa'
-import { Hkdf } from 'libra-web-core-utils/crypto/Hkdf'
-import { Pbkdf } from 'libra-web-core-utils/crypto/Pbkdf'
+import { toBufferLE } from 'bigint-buffer'
+import KeyPrefixes from '../libra-web-core-utils/constants/KeyPrefixes'
+import { KeyPair } from '../libra-web-core-utils/crypto/Eddsa'
+import { Hkdf } from '../libra-web-core-utils/crypto/Hkdf'
+import { Pbkdf } from '../libra-web-core-utils/crypto/Pbkdf'
 import { Mnemonic } from './Mnemonic'
 
 /**
@@ -12,10 +13,12 @@ import { Mnemonic } from './Mnemonic'
 export class Seed {
   public static fromMnemonic(words: string[] | Mnemonic, salt: string = 'LIBRA'): Seed {
     const mnemonic: Mnemonic = Array.isArray(words) ? new Mnemonic(words) : words
-    const mnemonicBytes = mnemonic.toBytes()
-    const parsedSalt = `${KeyPrefixes.MnemonicSalt}${salt}`
-
-    const bytes = new Pbkdf('sha256').extract(mnemonicBytes, parsedSalt, 2048, 32)
+    const bytes = new Pbkdf('sha3-256').sha3256Pbkdf2(
+      Buffer.from(mnemonic.toBytes()),
+      Buffer.from(`${KeyPrefixes.MnemonicSalt}${salt}`),
+      2048,
+      32,
+    )
     return new Seed(bytes)
   }
   public readonly data: Uint8Array
@@ -38,7 +41,7 @@ export class KeyFactory {
 
   constructor(seed: Seed) {
     this.seed = seed
-    this.hkdf = new Hkdf('sha256')
+    this.hkdf = new Hkdf('sha3-256')
     this.masterPrk = this.hkdf.extract(this.seed.data, KeyPrefixes.MasterKeySalt)
   }
 
@@ -47,7 +50,19 @@ export class KeyFactory {
    *
    */
   public generateKey(childDepth: number): KeyPair {
-    const info = `${KeyPrefixes.DerivedKey}${childDepth}`
+    // const childDepthBuffer = toBufferLE(BigInt(childDepth), 8)
+    const childDepthBuffer = Buffer.from(
+      BigInt(childDepth)
+        .toString(16)
+        .padStart(16, '0')
+        .slice(0, 16),
+      'hex',
+    )
+    childDepthBuffer.reverse()
+    const info = Buffer.from([
+      ...Uint8Array.from(Buffer.from(KeyPrefixes.DerivedKey)),
+      ...Uint8Array.from(childDepthBuffer),
+    ])
     const secretKey = this.hkdf.expand(this.masterPrk, info, 32)
 
     return KeyPair.fromSecretKey(secretKey)

@@ -15,11 +15,11 @@ import {
   UpdateToLatestLedgerRequest,
   RawTransaction,
   SignedTransaction,
-} from 'libra-web-net'
-import { CursorBuffer } from 'libra-web-core-utils/common/CursorBuffer'
-import PathValues from 'libra-web-core-utils/constants/PathValues'
-import { LibraTransaction, LibraTransactionFactory } from 'libra-web-transaction'
-import { Account, AccountAddress, AccountState, AccountStates } from 'libra-web-account'
+} from '../libra-web-net'
+import { CursorBuffer } from '../libra-web-core-utils/common/CursorBuffer'
+import PathValues from '../libra-web-core-utils/constants/PathValues'
+import { LibraTransaction, LibraTransactionFactory } from '../libra-web-transaction'
+import { Account, AccountAddress, AccountState, AccountStates } from '../libra-web-account'
 
 export enum LibraNetwork {
   Testnet = 'testnet',

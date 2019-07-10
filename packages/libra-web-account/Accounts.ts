@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { SHA3 } from 'sha3'
-import { CursorBuffer } from 'libra-web-core-utils/common/CursorBuffer'
-import Addresses from 'libra-web-core-utils/constants/Addresses'
-import { KeyPair } from 'libra-web-core-utils/crypto/Eddsa'
+import { CursorBuffer } from '../libra-web-core-utils/common/CursorBuffer'
+import Addresses from '../libra-web-core-utils/constants/Addresses'
+import { KeyPair } from '../libra-web-core-utils/crypto/Eddsa'
 
 export type AccountStates = AccountState[]
 

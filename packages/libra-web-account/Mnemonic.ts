@@ -1,6 +1,6 @@
 import { generateMnemonic } from 'bip39'
-import CollectionUtil from 'libra-web-core-utils/common/CollectionUtil'
-import MnemonicWords from 'libra-web-core-utils/constants/MnemonicWords'
+import CollectionUtil from '../libra-web-core-utils/common/CollectionUtil'
+import MnemonicWords from '../libra-web-core-utils/constants/MnemonicWords'
 
 /**
  * Handles logic for loading, writing and encoding mnemonic strings

@@ -1,4 +1,4 @@
-import { Mnemonic } from 'libra-web-account'
+import { Mnemonic } from '../packages/libra-web-account'
 
 describe('LibraWallet', () => {
   describe('generateMnemonic()', () => {

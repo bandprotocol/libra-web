@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Uint64LE } from 'int64-buffer'
-import { AccountAddress } from 'libra-web-account'
-import { Program, TransactionArgument } from 'libra-web-net'
+import { AccountAddress } from '../libra-web-account'
+import { Program, TransactionArgument } from '../libra-web-net'
 
 interface LibraGasConstraint {
   maxGasAmount: BigNumber
