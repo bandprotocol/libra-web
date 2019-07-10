@@ -38,7 +38,7 @@ Below you can find example usages together with explanation. Note that this is a
 
 ### 👛 LibraWallet
 
-You can create a wallet using `LibraWallet` class. A wallet is like your masterkey and you can create almost infinitely many Libra accounts from it. Note that PyLibra's mnemonic scheme is not similar to that of [Libra's CLI](https://github.com/libra/libra/tree/master/client/src), so you cannot import mnemonic between the two libraries (yet).
+You can create a wallet using `LibraWallet` class. A wallet is like your masterkey and you can create almost infinitely many Libra accounts from it. Since we're using the same mnemonic scheme as libra-cli, you should be able to reuse the mnemonic exported from the official client and vice-versa.
 
 ```js
 import { LibraWallet } from 'libra-web'
