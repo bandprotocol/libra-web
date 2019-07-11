@@ -1,11 +1,9 @@
 import * as jspb from "google-protobuf"
 
 import * as get_with_proof_pb from './get_with_proof_pb';
-import * as transaction_pb from './transaction_pb';
-import * as proof_pb from './proof_pb';
-import * as ledger_info_pb from './ledger_info_pb';
-import * as vm_errors_pb from './vm_errors_pb';
 import * as mempool_status_pb from './mempool_status_pb';
+import * as transaction_pb from './transaction_pb';
+import * as vm_errors_pb from './vm_errors_pb';
 
 export class SubmitTransactionRequest extends jspb.Message {
   getSignedTxn(): transaction_pb.SignedTransaction | undefined;
@@ -27,6 +25,28 @@ export namespace SubmitTransactionRequest {
   }
 }
 
+export class AdmissionControlStatus extends jspb.Message {
+  getCode(): AdmissionControlStatusCode;
+  setCode(value: AdmissionControlStatusCode): void;
+
+  getMessage(): string;
+  setMessage(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): AdmissionControlStatus.AsObject;
+  static toObject(includeInstance: boolean, msg: AdmissionControlStatus): AdmissionControlStatus.AsObject;
+  static serializeBinaryToWriter(message: AdmissionControlStatus, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): AdmissionControlStatus;
+  static deserializeBinaryFromReader(message: AdmissionControlStatus, reader: jspb.BinaryReader): AdmissionControlStatus;
+}
+
+export namespace AdmissionControlStatus {
+  export type AsObject = {
+    code: AdmissionControlStatusCode,
+    message: string,
+  }
+}
+
 export class SubmitTransactionResponse extends jspb.Message {
   getVmStatus(): vm_errors_pb.VMStatus | undefined;
   setVmStatus(value?: vm_errors_pb.VMStatus): void;
@@ -34,12 +54,16 @@ export class SubmitTransactionResponse extends jspb.Message {
   clearVmStatus(): void;
   hasVmStatus(): boolean;
 
-  getAcStatus(): AdmissionControlStatus;
-  setAcStatus(value: AdmissionControlStatus): void;
+  getAcStatus(): AdmissionControlStatus | undefined;
+  setAcStatus(value?: AdmissionControlStatus): void;
+  hasAcStatus(): boolean;
+  clearAcStatus(): void;
   hasAcStatus(): boolean;
 
-  getMempoolStatus(): mempool_status_pb.MempoolAddTransactionStatus;
-  setMempoolStatus(value: mempool_status_pb.MempoolAddTransactionStatus): void;
+  getMempoolStatus(): mempool_status_pb.MempoolAddTransactionStatus | undefined;
+  setMempoolStatus(value?: mempool_status_pb.MempoolAddTransactionStatus): void;
+  hasMempoolStatus(): boolean;
+  clearMempoolStatus(): void;
   hasMempoolStatus(): boolean;
 
   getValidatorId(): Uint8Array | string;
@@ -60,8 +84,8 @@ export class SubmitTransactionResponse extends jspb.Message {
 export namespace SubmitTransactionResponse {
   export type AsObject = {
     vmStatus?: vm_errors_pb.VMStatus.AsObject,
-    acStatus: AdmissionControlStatus,
-    mempoolStatus: mempool_status_pb.MempoolAddTransactionStatus,
+    acStatus?: AdmissionControlStatus.AsObject,
+    mempoolStatus?: mempool_status_pb.MempoolAddTransactionStatus.AsObject,
     validatorId: Uint8Array | string,
   }
 
@@ -73,7 +97,7 @@ export namespace SubmitTransactionResponse {
   }
 }
 
-export enum AdmissionControlStatus { 
+export enum AdmissionControlStatusCode { 
   Accepted = 0,
   Blacklisted = 1,
   Rejected = 2,

@@ -14,15 +14,11 @@ grpc.web = require('grpc-web');
 
 var get_with_proof_pb = require('./get_with_proof_pb.js')
 
+var mempool_status_pb = require('./mempool_status_pb.js')
+
 var transaction_pb = require('./transaction_pb.js')
 
-var proof_pb = require('./proof_pb.js')
-
-var ledger_info_pb = require('./ledger_info_pb.js')
-
 var vm_errors_pb = require('./vm_errors_pb.js')
-
-var mempool_status_pb = require('./mempool_status_pb.js')
 const proto = {};
 proto.admission_control = require('./admission_control_pb.js');
 

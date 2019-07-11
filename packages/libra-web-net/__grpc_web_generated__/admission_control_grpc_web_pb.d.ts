@@ -1,11 +1,9 @@
 import * as grpcWeb from 'grpc-web';
 
 import * as get_with_proof_pb from './get_with_proof_pb';
-import * as transaction_pb from './transaction_pb';
-import * as proof_pb from './proof_pb';
-import * as ledger_info_pb from './ledger_info_pb';
-import * as vm_errors_pb from './vm_errors_pb';
 import * as mempool_status_pb from './mempool_status_pb';
+import * as transaction_pb from './transaction_pb';
+import * as vm_errors_pb from './vm_errors_pb';
 
 import {
   SubmitTransactionRequest,
