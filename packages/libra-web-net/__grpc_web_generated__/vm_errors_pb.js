@@ -11,6 +11,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var language_storage_pb = require('./language_storage_pb.js');
+goog.object.extend(proto, language_storage_pb);
 goog.exportSymbol('proto.types.ArithmeticError', null, global);
 goog.exportSymbol('proto.types.ArithmeticError.ArithmeticErrorType', null, global);
 goog.exportSymbol('proto.types.AssertionFailure', null, global);
@@ -534,7 +536,8 @@ proto.types.VMVerificationStatus.toObject = function(includeInstance, msg) {
     statusKind: jspb.Message.getFieldWithDefault(msg, 1, 0),
     moduleIdx: jspb.Message.getFieldWithDefault(msg, 2, 0),
     errorKind: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    message: jspb.Message.getFieldWithDefault(msg, 4, "")
+    message: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    dependencyId: (f = msg.getDependencyId()) && language_storage_pb.ModuleId.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -586,6 +589,11 @@ proto.types.VMVerificationStatus.deserializeBinaryFromReader = function(msg, rea
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
+      break;
+    case 5:
+      var value = new language_storage_pb.ModuleId;
+      reader.readMessage(value,language_storage_pb.ModuleId.deserializeBinaryFromReader);
+      msg.setDependencyId(value);
       break;
     default:
       reader.skipField();
@@ -644,6 +652,14 @@ proto.types.VMVerificationStatus.serializeBinaryToWriter = function(message, wri
       f
     );
   }
+  f = message.getDependencyId();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      language_storage_pb.ModuleId.serializeBinaryToWriter
+    );
+  }
 };
 
 
@@ -652,7 +668,8 @@ proto.types.VMVerificationStatus.serializeBinaryToWriter = function(message, wri
  */
 proto.types.VMVerificationStatus.StatusKind = {
   SCRIPT: 0,
-  MODULE: 1
+  MODULE: 1,
+  DEPENDENCY: 2
 };
 
 /**
@@ -712,6 +729,39 @@ proto.types.VMVerificationStatus.prototype.getMessage = function() {
 /** @param {string} value */
 proto.types.VMVerificationStatus.prototype.setMessage = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional ModuleId dependency_id = 5;
+ * @return {?proto.types.ModuleId}
+ */
+proto.types.VMVerificationStatus.prototype.getDependencyId = function() {
+  return /** @type{?proto.types.ModuleId} */ (
+    jspb.Message.getWrapperField(this, language_storage_pb.ModuleId, 5));
+};
+
+
+/** @param {?proto.types.ModuleId|undefined} value */
+proto.types.VMVerificationStatus.prototype.setDependencyId = function(value) {
+  jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ */
+proto.types.VMVerificationStatus.prototype.clearDependencyId = function() {
+  this.setDependencyId(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.types.VMVerificationStatus.prototype.hasDependencyId = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
