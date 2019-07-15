@@ -51,7 +51,7 @@ export class KeyFactory {
   public generateKey(childDepth: number): KeyPair {
     // const childDepthBuffer = toBufferLE(BigInt(childDepth), 8)
     const childDepthBuffer = Buffer.from(
-      BigInt(childDepth)
+      Number(childDepth)
         .toString(16)
         .padStart(16, '0')
         .slice(0, 16),
