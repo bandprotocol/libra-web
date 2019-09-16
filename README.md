@@ -95,12 +95,12 @@ You can query an account's state by using `get_account_state` function on `Libra
 import { LibraWallet, LibraClient } from 'libra-web'
 
 const client = LibraClient()
-const wallet = LibraWallet("student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel")
+const wallet = LibraWallet('student deliver dentist cat gorilla sleep proud naive gown fiber awkward weasel')
 const address = wallet.getAccount(0).getAddress()
 
 // In an async function
 // You can pass in a hex string address
-cosnt accountState = await client.getAccountState(address)
+const accountState = await client.getAccountState(address)
 console.log(accountState.balance)
 console.log(accountState.sequenceNumber)
 console.log(accountState.authenticationKey)
