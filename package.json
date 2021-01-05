@@ -32,7 +32,7 @@
   "author": "Perfect Makanju, Sorawit Suriyakarn <swit@bandprotocol.com>, Paul Chonpimai <paul@bandprotocol.com>",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "elliptic": "^6.4.1",
